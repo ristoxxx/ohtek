@@ -1,13 +1,21 @@
-kaupungit = {
-    'helsinki': 10100,
-    'espoo': 10200,
-    'vantaa': 10300,
-    'vantaa': 10400
-}
+import json
 
+"""luetaan tiedosto ja parsitaan se dictionary muotoon"""
+tiedosto = open("D:\ohtek\postinumerot\postinumerot.json", "r")
+luettu = (tiedosto.read())
+kaupungit = json.loads(luettu)
+
+"""pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
 print("Kirjoita postinumero: ")
-x = int(input())
+x = input()
 
-for kaupunki, vakiluku in kaupungit.items():
-    if vakiluku == x:
+"""käydään lista läpi ja jos postinumero löytyy niin tulostetaan
+postitoimipaikan nimi"""
+for postinumero, kaupunki in kaupungit.items():
+    if postinumero == x:
         print(kaupunki.upper())
+        
+
+        
+
+
