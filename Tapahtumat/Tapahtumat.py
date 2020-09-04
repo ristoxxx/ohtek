@@ -3,57 +3,81 @@ import datetime
 from datetime import date
 import urllib.request
 
-json_url ="http://open-api.myhelsinki.fi/v1/events/?limit=100"
+"""osoite josta tiedot haetaan(?limit=numero jos haluaa testata pienmmällä rivimmäärällä)"""
+json_url ="http://open-api.myhelsinki.fi/v1/events/"
 
+"""luetaan tiedot ylläolevasta osoitteesta"""
 def hae_tiedot():
     # https://docs.python.org/3/howto/urllib2.html
     with urllib.request.urlopen(json_url) as response:
         # https://docs.python.org/3/library/json.html
         return json.loads(response.read())
 
-tiedot = hae_tiedot()
 
- 
-"""luetaan tiedosto ja parsitaan se dictionary muotoon
-tiedosto = open("D:\ohtek\Tapahtumat\ekat.json", "r")
-luettu = (tiedosto.read())
-tiedot = json.loads(luettu)"""
+"""haetaan päivämäärä alkuperäisestä tiedostosta"""
+def hae_paiva(a):
+    try:
+        paivays = date.fromisoformat((tiedot["data"][a]["event_dates"]["starting_day"])[0:10])
+        return paivays
+    except TypeError:
+        return date.fromisoformat("2000-01-01")
 
-pituus = (len(tiedot["data"]))
-"""pituus = 100"""
+"""haetaan päivämäärä uudelleenjärjestetystä tietorakenteesta"""
+def hae_uusi_paiva(a):
+    try:
+        paivays = ((uusi_hakemisto[a]["event_dates"]["starting_day"])[0:10])
+        return paivays
+    except TypeError:
+        return date.fromisoformat("2000-01-01")
+   
+"""haetaan kellonaika uudelleenjärjestetystä tietorakenteesta"""    
+def hae_kellonaika(a):
+    try:
+        aika = ((uusi_hakemisto[a]["event_dates"]["starting_day"])[11:19])
+        return aika
+    except TypeError:
+        return ("00:00:00")
 
-def get_date(a): 
-    return date.fromisoformat((tiedot["data"][a]["event_dates"]["starting_day"])[0:10])
-
-def compare_date(a,b):
+"""verrataan kahta päivämäärätietoa keskenään"""
+def vertaa_paivays(a,b):
     return a < b
 
-foo = {}
-for x in range(pituus):
-    foo[x] = (x, get_date(x))
-
-def sorttaa():
+def jarjesta():
     for j in range(pituus -1):
         for x in range(pituus -1):
-            a = foo[x][1]
-            b = foo[x + 1][1]
-            if(compare_date(a,b)):
+            a = hakemisto[x][1]
+            b = hakemisto[x + 1][1]
+            if(vertaa_paivays(a,b)):
                 y = x + 1
-                d = foo[x]
-                foo[x] = foo[y]
-                foo[y] = d
-    return foo
+                d = hakemisto[x]
+                hakemisto[x] = hakemisto[y]
+                hakemisto[y] = d
+    return hakemisto
 
-foo = sorttaa()
+
+tiedot = hae_tiedot()
+"""pituus = tietueiden lukumäärä"""
+pituus = (len(tiedot["data"]))
+
+"""muodostetaan erillinen hakemisto päivämääristä ja tietueen sijainnista"""
+hakemisto = {}
+for x in range(pituus):
+    hakemisto[x] = (x, hae_paiva(x))
+
+"""järjestetään hakemisto päiväyksen mukaan. huom. ei huomioi kellonaikoja"""
+hakemisto = jarjesta()
+
+"""kootaan uusi tietorakenne järjestämällä talkuperäiset tietueet
+muodostetun hakemiston avulla. samalla myös tulostetaan uuden listan rivit.
+ei ehkä elegantein ratkaisu"""
+
 ed_paiva = ""
-bar = {}
-"""def sijoita():"""
+uusi_hakemisto = {}
+
 for s in range(pituus -1):
-    bar[s] = (tiedot["data"][(foo[s][0])])
-    paiva = ((bar[s]["event_dates"]["starting_day"])[0:10])
+    uusi_hakemisto[s] = (tiedot["data"][(hakemisto[s][0])])
+    paiva = hae_uusi_paiva(s)
     if(paiva != ed_paiva):
         print(paiva)
     ed_paiva = paiva
-    print("  ", ((bar[s]["event_dates"]["starting_day"])[11:19]), bar[s]["name"]["fi"])
-        
-"""bar = sijoita()"""
+    print("  ", hae_kellonaika(s), uusi_hakemisto[s]["name"]["fi"])
