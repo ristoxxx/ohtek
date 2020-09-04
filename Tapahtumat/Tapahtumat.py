@@ -1,18 +1,29 @@
 import json
 import datetime
 from datetime import date
+import urllib.request
 
+json_url ="http://open-api.myhelsinki.fi/v1/events/?limit=100"
 
-"""luetaan tiedosto ja parsitaan se dictionary muotoon"""
+def hae_tiedot():
+    # https://docs.python.org/3/howto/urllib2.html
+    with urllib.request.urlopen(json_url) as response:
+        # https://docs.python.org/3/library/json.html
+        return json.loads(response.read())
+
+tiedot = hae_tiedot()
+
+ 
+"""luetaan tiedosto ja parsitaan se dictionary muotoon
 tiedosto = open("D:\ohtek\Tapahtumat\ekat.json", "r")
 luettu = (tiedosto.read())
-kaupungit = json.loads(luettu)
+tiedot = json.loads(luettu)"""
 
-"""pituus = (len(kaupungit["data"]))"""
-pituus = 100
+pituus = (len(tiedot["data"]))
+"""pituus = 100"""
 
 def get_date(a): 
-    return date.fromisoformat((kaupungit["data"][a]["event_dates"]["starting_day"])[0:10])
+    return date.fromisoformat((tiedot["data"][a]["event_dates"]["starting_day"])[0:10])
 
 def compare_date(a,b):
     return a < b
@@ -38,7 +49,7 @@ ed_paiva = ""
 bar = {}
 """def sijoita():"""
 for s in range(pituus -1):
-    bar[s] = (kaupungit["data"][(foo[s][0])])
+    bar[s] = (tiedot["data"][(foo[s][0])])
     paiva = ((bar[s]["event_dates"]["starting_day"])[0:10])
     if(paiva != ed_paiva):
         print(paiva)
