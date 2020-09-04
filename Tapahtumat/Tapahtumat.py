@@ -9,7 +9,7 @@ luettu = (tiedosto.read())
 kaupungit = json.loads(luettu)
 
 """pituus = (len(kaupungit["data"]))"""
-pituus = 30
+pituus = 100
 
 def get_date(a): 
     return date.fromisoformat((kaupungit["data"][a]["event_dates"]["starting_day"])[0:10])
@@ -34,11 +34,15 @@ def sorttaa():
     return foo
 
 foo = sorttaa()
-
+ed_paiva = ""
 bar = {}
 """def sijoita():"""
 for s in range(pituus -1):
     bar[s] = (kaupungit["data"][(foo[s][0])])
-    print(bar[s]["event_dates"]["starting_day"], bar[s]["name"]["fi"])
+    paiva = ((bar[s]["event_dates"]["starting_day"])[0:10])
+    if(paiva != ed_paiva):
+        print(paiva)
+    ed_paiva = paiva
+    print("  ", ((bar[s]["event_dates"]["starting_day"])[11:19]), bar[s]["name"]["fi"])
         
 """bar = sijoita()"""
