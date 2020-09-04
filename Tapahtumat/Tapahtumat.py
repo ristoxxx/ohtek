@@ -8,35 +8,37 @@ tiedosto = open("D:\ohtek\Tapahtumat\ekat.json", "r")
 luettu = (tiedosto.read())
 kaupungit = json.loads(luettu)
 
-print(kaupungit["data"][1]["event_dates"]["starting_day"])
-
-apu = (kaupungit["data"][1]["event_dates"]["starting_day"])
-date1 = apu[0:10]
-date2 = "2020-11-18"
+"""pituus = (len(kaupungit["data"]))"""
+pituus = 30
 
 def get_date(a): 
     return date.fromisoformat((kaupungit["data"][a]["event_dates"]["starting_day"])[0:10])
 
-print(get_date(5))
-
+def compare_date(a,b):
+    return a < b
 
 foo = {}
+for x in range(pituus):
+    foo[x] = (x, get_date(x))
 
-foo[0] = (0, get_date(0))
-foo[1] = (1, get_date(1))
-foo[2] = (2, get_date(2))
-foo[3] = (3, get_date(3))
+def sorttaa():
+    for j in range(pituus -1):
+        for x in range(pituus -1):
+            a = foo[x][1]
+            b = foo[x + 1][1]
+            if(compare_date(a,b)):
+                y = x + 1
+                d = foo[x]
+                foo[x] = foo[y]
+                foo[y] = d
+    return foo
 
+foo = sorttaa()
 
-print(foo)
-
-x = foo[0]
-foo[0] = foo[1]
-foo[1] = x
-
-print(foo[0][0])    
-def compare_date(a,b):
-    date1 = date.fromisoformat(a)
-    date2 = date.fromisoformat(b)
-    return date1 < date2
-print (compare_date(date1,date2))
+bar = {}
+"""def sijoita():"""
+for s in range(pituus -1):
+    bar[s] = (kaupungit["data"][(foo[s][0])])
+    print(bar[s]["event_dates"]["starting_day"], bar[s]["name"]["fi"])
+        
+"""bar = sijoita()"""
