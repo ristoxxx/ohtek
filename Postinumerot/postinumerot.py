@@ -1,31 +1,76 @@
 import json
 
-"""luetaan tiedosto ja parsitaan se dictionary muotoon"""
-tiedosto = open("D:\ohtek\postinumerot\postinumerot.json", "r")
-luettu = (tiedosto.read())
-kaupungit = json.loads(luettu)
+json_url="postinumerot.json"
 
-"""pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
-print("Kirjoita postitoimipaikka: ", end="")
-x = input()
-x = x.upper()
-print("Postinumerot: ", end="")
+def lue_tiedosto(osoite):
+    
+    """luetaan tiedosto ja parsitaan se dictionary muotoon"""
+    tiedosto = open(osoite, "r")
+    luettu = (tiedosto.read())
+    lista = json.loads(luettu)
+    return lista
 
-"""käydään lista läpi ja jos postitoimipaikka löytyy niin lisätään 
-listalle kaikki postinumerot samalla muotoillen lista tulostukseen"""
-lista = []
-for postinumero, kaupunki in kaupungit.items():
-    if kaupunki == x:
-        lista.append(postinumero.upper() + ", ")
-
-lista[-1] = lista[-1].strip(", ")
-
-"""tulostetaan listalla olevat postinumerot"""
-for numero in range(len(lista)): 
-    print(lista[numero], end="") 
-
-        
-
-        
+def kysy_toiminto():
+    """kysytään käyttäjältä halutaanko etsiä 
+    kaupungin vai postinumeron perusteella"""
+    print("Etsitäänkö postinumeroa (P) vai kaupunkia (K): ", end="")
+    syote = input()
+    return syote
 
 
+def kysy_kaupunki():
+    """pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
+    print("Kirjoita postitoimipaikka: ", end="")
+    syote = input()
+    return syote
+
+def kysy_postinumero():
+    """pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
+    print("Kirjoita postinumero: ", end="")
+    syote = input()
+    return syote
+
+def hae_kaupunki(kaupungit, numero):
+    for postinumero, kaupunki in kaupungit.items():
+        if postinumero == numero:
+            print(kaupunki.upper())
+            return kaupunki.upper()
+    return ''
+
+def hae_postinumerot(kaupungit, nimi):
+    """käydään lista läpi ja jos postitoimipaikka löytyy niin lisätään 
+    listalle kaikki postinumerot samalla muotoillen lista tulostukseen"""
+    nimi = nimi.upper()
+    lista = []
+    for postinumero, kaupunki in kaupungit.items():
+        if kaupunki == nimi:
+            lista.append(postinumero.upper() + ", ")
+    if lista == []:
+        lista.append(", ")
+    
+    lista[-1] = lista[-1].strip(", ")
+    
+
+    """def tulosta(lista):"""
+    """tulostetaan listalla olevat postinumerot"""
+    print("Postinumerot: ", end="")
+    for numero in range(len(lista)): 
+        print(lista[numero], end="") 
+    return lista
+"""print(kaupungit)"""
+
+def main():
+    print("\033[1;32;40m")
+    kaupungit = lue_tiedosto(json_url)
+    valinta = 'X' 
+    while valinta != 'K' and valinta != 'P':
+        valinta = kysy_toiminto()
+        if valinta == 'K':
+            nimi = kysy_kaupunki()   
+            hae_postinumerot(kaupungit, nimi)
+        if valinta == 'P':
+            numero = kysy_postinumero()
+            hae_kaupunki(kaupungit, numero)
+    
+if __name__ == "__main__":
+    main()
