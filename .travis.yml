@@ -4,4 +4,4 @@ python:
 cache: pip
 
 script:
-  - python tests.py
+  - pytest
