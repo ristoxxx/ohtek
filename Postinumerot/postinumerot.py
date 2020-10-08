@@ -1,4 +1,3 @@
-# coding=UTF-8
 import json
 
 json_url="postinumerot.json"
@@ -14,7 +13,7 @@ def lue_tiedosto(osoite):
 def kysy_toiminto():
     """kysytaan kayttajalta halutaanko etsia 
     kaupungin vai postinumeron perusteella"""
-    print("Etsitäänkö postinumeroa (P) vai kaupunkia (K): ", end="")
+    print("Etsitaanko postinumeroa (P) vai kaupunkia (K): ", end="")
     syote = input()
     return syote
 
