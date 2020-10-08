@@ -1,9 +1,6 @@
 atomicwrites==1.4.0
 attrs==20.2.0
 backcall==0.2.0
-boa-constructor==0.6.1
-colorama==0.4.3
-decorator==4.4.2
 future==0.18.2
 gui2py===0.9.3-py2x
 iniconfig==1.0.1
