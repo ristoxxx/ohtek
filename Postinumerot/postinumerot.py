@@ -13,7 +13,7 @@ def lue_tiedosto(osoite):
 def kysy_toiminto():
     """kysytaan kayttajalta halutaanko etsia 
     kaupungin vai postinumeron perusteella"""
-    print("Etsitaanko postinumeroa (P) vai kaupunkia (K): ", end="")
+    print("Etsitaanko postinumeroa (P) vai kaupunkia (K): ", end = "")
     syote = input()
     return syote
 
