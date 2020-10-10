@@ -10,26 +10,28 @@ function idFilter(minNumber = '1', maxNumber = '1') {
         return id && 4 <= id && id <= 8;
     }
 }
-function userPosts(posts){
+function userPosts(posts, x){
     let uPosts = posts
-    .filter(p => p.userId == 4);
+    .filter(p => p.userId == x);
     return uPosts;
 }
 
-function abFilter(users){
+function abFilter(users, y){
     let su = users
     .filter(e => e.id != null)
-    .filter(e => e.id >= 4);
+    .filter(e => e.id == y);
     return su;
 }
 
 
 
+
 app.get('/', function (req, res) {
-    let suodatettu = abFilter(users);
-    let viestit = userPosts(posts);
-    //res.json(suodatettu);
-    res.json(viestit);
+    let suodatettu = abFilter(users, 5);
+    let viestit = userPosts(posts, 5);
+    let lisatty = {...suodatettu, posts: viestit };
+    res.json(lisatty);
+    //res.json(viestit);
 })
 
 app.get('/hei', function (req, res) {
