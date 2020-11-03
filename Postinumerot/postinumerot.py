@@ -11,21 +11,21 @@ def lue_tiedosto(osoite):
     return lista
 
 def kysy_toiminto():
-    """kysytään käyttäjältä halutaanko etsiä 
+    """kysytaan kayttajalta halutaanko etsia 
     kaupungin vai postinumeron perusteella"""
-    print("Etsitäänkö postinumeroa (P) vai kaupunkia (K): ", end="")
+    print("Etsitaanko postinumeroa (P) vai kaupunkia (K): ", end="")
     syote = input()
     return syote
 
 
 def kysy_kaupunki():
-    """pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
+    """pyydeaan kayttajaa syottamaan postinumero ja luetaan syote"""
     print("Kirjoita postitoimipaikka: ", end="")
     syote = input()
     return syote
 
 def kysy_postinumero():
-    """pyydetään käyttäjää syöttämään postinumero ja luetaan syöte"""
+    """pyydetaan kayttajaa syottamaan postinumero ja luetaan syote"""
     print("Kirjoita postinumero: ", end="")
     syote = input()
     return syote
@@ -38,7 +38,7 @@ def hae_kaupunki(kaupungit, numero):
     return ''
 
 def hae_postinumerot(kaupungit, nimi):
-    """käydään lista läpi ja jos postitoimipaikka löytyy niin lisätään 
+    """kaydaan lista lapi ja jos postitoimipaikka loytyy niin lisataan 
     listalle kaikki postinumerot samalla muotoillen lista tulostukseen"""
     nimi = nimi.upper()
     lista = []
